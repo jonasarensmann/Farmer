@@ -33,7 +33,8 @@ return function(req, res)
             version = aurora.escapeHtml(item.version),
             license = aurora.escapeHtml(item.license),
             description = aurora.escapeHtml(item.description),  
-            owner = aurora.escapeHtml(owner),              
+            owner = aurora.escapeHtml(owner), 
+            updated = aurora.escapeHtml(item.updated),             
         }
 
         if item.dependencies and #item.dependencies > 0 then

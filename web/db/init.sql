@@ -23,5 +23,6 @@ DEFINE FIELD dependencies ON crops TYPE option<array<record<crops>>>;
 DEFINE FIELD version ON crops TYPE string DEFAULT "Not Specified";
 DEFINE FIELD license ON crops TYPE string DEFAULT "Not Specified";
 DEFINE FIELD description ON crops TYPE string DEFAULT "No Description";
+DEFINE FIELD updated ON crops TYPE datetime VALUE time::now();
 
-DEFINE USER view ON DATABASE PASSWORD 'view' ROLES VIEWER;
+DEFINE USER view ON DATABASE PASSWORD "view" ROLES VIEWER;
