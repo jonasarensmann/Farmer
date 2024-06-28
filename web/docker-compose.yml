@@ -1,0 +1,10 @@
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    command: start --log debug --auth --user root --pass root file://database.db
+    volumes:
+      - ./data/database.db:/database.db
+    restart: always
+    user: root
+    ports:
+      - "9497:8000"

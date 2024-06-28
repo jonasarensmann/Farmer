@@ -1,0 +1,71 @@
+<div class="card mt-6 mx-6">
+    <div class="card-content">
+        <div class="content">
+            <h2 class="is-size-3 has-text-weight-semibold has-text-grey-lighter mb-3">Sign Up</h2>
+            <div class="field">
+                <label class="label" for="name">Username</label>
+                <div class="control">
+                    <input id="user" name="user" class="input" type="text" placeholder="Text input">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label" for="pass">Password</label>
+                <div class="contro">
+                    <input id="pass" name="pass" class="input" type="password" placeholder="Text input">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="pass2">Confirm Password</label>
+                <div class="contro">
+                    <input id="pass2" name="pass2" class="input" type="password" placeholder="Text input">
+                </div>
+            </div>
+            <div id="error" class="mb-4"></div>
+
+            <div class="field">
+                <div class="control">
+                    <button id="signupButton" class="button is-primary">Log in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector('#signupButton').addEventListener('click', async () => {
+        const user = document.querySelector('#user').value;
+        const pass = document.querySelector('#pass').value;
+        const pass2 = document.querySelector('#pass2').value;
+
+        if (pass !== pass2) {
+            document.querySelector('#error').innerHTML = `<p class="help is-danger">Passwords do not match</p>`;
+            return;
+        }
+
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user,
+                pass
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === "error") {
+            document.querySelector('#error').innerHTML = `<p class="help is-danger">${data.message}</p>`;
+        } else {
+            localStorage.setItem('token', data.token);
+
+            createNotification('Signed up successfully', 'success');
+
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        }
+    });
+</script>

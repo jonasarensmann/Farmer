@@ -1,0 +1,31 @@
+<div class="card mt-6 mx-6">
+    <div class="card-content">
+        <div class="content">
+            <h2 class="is-size-3 has-text-weight-semibold has-text-grey-lighter mb-3">{{name}}</h2>
+
+            <h3 class="is-size-4 has-text-weight-semibold has-text-grey-lighter mt-6 mb-3">Description</h3>
+            <p>{{description}}</p>
+
+            Latest Version: {{version}}<br>
+            Last Updated: 2021-08-01<br>
+            Crerated By: {{owner}}<br>
+            License: {{license}}<br>
+
+            <h3 class="is-size-4 has-text-weight-semibold has-text-grey-lighter mt-6 mb-3">Dependencies</h3>
+            <table class="table is-striped w-full" style="display: {{tableHidden}};">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{deps}}
+                </tbody>
+            </table>
+
+            <h3 class="is-size-4 has-text-weight-semibold has-text-grey-lighter mt-6 mb-3">Installation</h3>
+            <input readonly class="input" type="text" value="farmer add {{name}}" />
+        </div>
+    </div>
+</div>

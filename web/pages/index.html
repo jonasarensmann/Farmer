@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer</title>
+    <link rel="stylesheet" href="/static/bulma.min.css">
+    <style>
+        :root {
+            --bulma-body-background-color: #111720;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="#notifications"
+        style="position: absolute; height: 98vh; width: 30vw; left: 68vw; z-index: 100; pointer-events: none; top: 1vh">
+    </div>
+
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <h1 class="is-size-3 has-text-white-bis has-text-weight-bold">Farmer</h1>
+            </a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="navbarMenu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/view">
+                    Crops
+                </a>
+
+                <a class="navbar-item" href="/docs">
+                    Documentation
+                </a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons" id="notLoggedIn">
+                        <a href="/signup" class="button is-primary">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a href="/signin" class="button is-light">
+                            Log in
+                        </a>
+                    </div>
+                    <div class="butons" id="loggedIn">
+                        <button class="button is-light" id="logoutButton">
+                            <strong>Log out</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="field has-addons">
+                    <div class="control" style="width: 90%">
+                        <input class="input" type="text" placeholder="Find a package">
+                    </div>
+                    <div class="control">
+                        <button class="button is-info">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div style="position: absolute; width: 100vw; z-index: -1;">
+        <img id="background-image" src="/static/background.jpg" style="size: 100vw; opacity: 20%;">
+        <p
+            style="font-size: 0.75rem; background-color: #111720; position: relative; bottom: 10px; padding-bottom: 10px;">
+            Designed by <a href="https://www.freepik.com">Freepik</a></p>
+    </div>
+    <main class="container">
+        {{page}}
+    </main>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        });
+
+        if (localStorage.getItem('token')) {
+            document.getElementById('notLoggedIn').style.display = 'none';
+            document.getElementById('loggedIn').style.display = 'block';
+        } else {
+            document.getElementById('notLoggedIn').style.display = 'block';
+            document.getElementById('loggedIn').style.display = 'none';
+        }
+
+
+        document.querySelector('#logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('token');
+
+            createNotification('Logged out successfully', 'success');
+
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        });
+
+        function createNotification(message, type) {
+            console.log('Creating notification')
+            const notifications = document.getElementById('#notifications');
+            const notification = document.createElement('div');
+            const button = document.createElement('button');
+            button.classList.add('delete');
+            button.onclick = () => notification.remove();
+            notification.appendChild(button);
+            notification.classList.add('notification');
+            notification.classList.add(`is-${type}`);
+            notification.innerText = message;
+            notifications.appendChild(notification);
+        }
+    </script>
+</body>
+
+</html>
