@@ -7,13 +7,15 @@ Packages are called "Crops" in Farmer. They are stored in the `crops` directory.
 ## Usage
 
 ```bash
-farmer install # Installs all crops in the crops directory
-farmer add <crop> # Adds a specific crop
-farmer remove <crop> # Removes a specific crop
-farmer update # Updates all crops
-farmer list # Lists all crops
-farmer upload # Uploads a crop to the Registry
-farmer help # Shows help
+Commands:
+    init  <name>    Initialize a new project
+    add <crop>      Add a new dependency
+    remove <crop>   Remove a dependency
+    bundle <output> Bundle a project to a single file (beta)
+    install         Install dependencies
+    list            List dependencies
+    upload          Upload a package
+    help            Display a help message
 ```
 
 ## The Registry
