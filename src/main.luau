@@ -143,7 +143,7 @@ local function getNewestVersion(packageName)
     })
 
     if result.statusCode ~= 200 then
-        return error("Error fetching package.", result.body)
+        return error(result.body)
     end
 
     local json = net.jsonDecode(result.body)
@@ -256,7 +256,7 @@ local function upload()
     })
 
     if result.statusCode ~= 200 then
-        return error("Error uploading package.", result.body)
+        return error(result.body)
     end
 
     return print("Package uploaded.", result.body)
