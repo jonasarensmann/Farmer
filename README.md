@@ -31,7 +31,7 @@ The docs are located at `https://farmer.jonas-arensmann.com/docs`.
 ```bash
 git clone https://github.com/jonasarensmann/farmer.git
 
-cd Farmer
+cd farmer
 
 lune run src/main bundle bundle.luau
 
