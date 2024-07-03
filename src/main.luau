@@ -78,6 +78,25 @@ local function writePackageFile(content)
     fs.writeFile("farmer.json", net.jsonEncode(content, true))
 end
 
+local function createDotLuaurcFile()
+    if fs.isFile(".luaurc") then
+        fs.removeFile(".luaurc")
+    end
+
+    local data = {
+        languageMode = "strict",
+        aliases = {}
+    }
+
+    if getPackageFile().dependencies then 
+        for name, version in pairs(getPackageFile().dependencies) do
+            data.aliases[name] = "./crops/" .. name
+        end
+    end
+
+    fs.writeFile(".luaurc", net.jsonEncode(data, true))
+end
+
 local function fetch(packageName)
     local mirror = getConfigValue("core.mirror")
 
@@ -162,20 +181,11 @@ local function install()
         return error("No dependencies found.")
     end
 
-    -- If installed prompt for reinstall
-    for name, version in pairs(packageFile.dependencies) do
-        if fs.isDir("crops/" .. name) then
-            local reinstall = io.prompt("confirm", "Reinstall " .. name .. "?")
-
-            if reinstall then
-                fetch(name)
-            end
-        end
-    end
-
     for name, version in pairs(packageFile.dependencies) do
         fetch(name)
     end
+
+    createDotLuaurcFile()
 
     return
 end
@@ -197,6 +207,8 @@ local function add(packageName: string)
 
     fetch(packageName)
 
+    createDotLuaurcFile()
+
     return
 end
 
@@ -207,9 +219,17 @@ local function remove(packageName: string)
         error("No dependencies found.")
     end
 
+    if not packageFile.dependencies[packageName] then
+        error("Dependency not found.")
+    end
+
+    fs.removeDir("crops/" .. packageName)
+
     packageFile.dependencies[packageName] = nil
 
     writePackageFile(packageFile)
+
+    createDotLuaurcFile()
 end
 
 local function list()
