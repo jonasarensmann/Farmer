@@ -74,6 +74,16 @@ local function getPackageFile()
     return net.jsonDecode(packageFile)
 end
 
+local function getDependencyPackageFile(name)
+    local packageFile = fs.readFile("crops/" .. name .. "/farmer.json")
+
+    if not packageFile then
+        return
+    end
+
+    return net.jsonDecode(packageFile)
+end
+
 local function writePackageFile(content)
     fs.writeFile("farmer.json", net.jsonEncode(content, true))
 end
@@ -88,9 +98,24 @@ local function createDotLuaurcFile()
         aliases = {}
     }
 
-    if getPackageFile().dependencies then 
-        for name, version in pairs(getPackageFile().dependencies) do
+    local packageFile = getPackageFile()
+    if packageFile and packageFile.dependencies then 
+        for name, version in pairs(packageFile.dependencies) do
             data.aliases[name] = "./crops/" .. name
+
+            local function createDependencyAliases(name)
+                local packageFile = getDependencyPackageFile(name)
+
+                if packageFile and packageFile.dependencies then
+                    for name, version in pairs(packageFile.dependencies) do
+                        data.aliases[name] = "./crops/" .. name
+
+                        createDependencyAliases(name)
+                    end
+                end
+            end
+
+            createDependencyAliases(name)
         end
     end
 
