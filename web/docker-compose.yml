@@ -1,10 +1,26 @@
 services:
   surrealdb:
     image: surrealdb/surrealdb:latest
-    command: start --log debug --auth --user root --pass root file://database.db
+    command: start --log debug --user root --pass root surrealkv://database.db
     volumes:
       - ./data/database.db:/database.db
-    restart: always
+      - ./db:/db
+    working_dir: /
+    restart: unless-stopped
     user: root
+    ports: 
+      - "4344:8000"
+  app:
+    image: nicell/lune
+    command: run src/main.luau
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - ./static:/app/static
+    depends_on:
+      -  surrealdb
+    links:
+      - surrealdb:surrealdb
+    restart: unless-stopped
     ports:
-      - "9497:8000"
+      - "4343:8080"

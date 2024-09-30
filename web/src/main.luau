@@ -55,6 +55,6 @@ end)
 
 aurora.static("/static", "static")
 
-aurora.createServer({
-    port = 9498,
+aurora.serve({
+    port = 8080,
 })

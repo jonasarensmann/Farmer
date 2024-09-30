@@ -1,6 +1,8 @@
+-- surreal import --conn http://localhost:4344 --user root --pass root --ns farmer --db main db/init.sql 
+
 DEFINE TABLE users SCHEMAFULL
   PERMISSIONS
-    FOR select, update, delete WHERE id = $auth.id
+    FOR select, update, delete WHERE id = $auth.id;
 
 DEFINE FIELD name ON users TYPE string;
 DEFINE FIELD pass ON users TYPE string;

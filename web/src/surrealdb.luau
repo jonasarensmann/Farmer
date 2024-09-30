@@ -1,6 +1,6 @@
 local net = require("@lune/net")
 
-local URL = "http://localhost:9497"
+local URL = "http://surrealdb:8000"
 local surrealdb = {}
 
 local function get(url, token)
